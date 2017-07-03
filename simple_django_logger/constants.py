@@ -4,6 +4,8 @@ class Keys():
     WARN = 'WARN'
     INFO = 'INFO'
     URL = 'url'
+    TAG = 'tag'
+    MESSAGE = 'message'
     LOG_LEVEL = 'level'
     REQUEST_METHOD = 'method'
     RESPONSE_STATUS = 'status'

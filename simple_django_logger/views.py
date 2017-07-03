@@ -118,9 +118,32 @@ class AllEventLogs(View):
     template_name = 'logger/all_event_logs.html'
 
     def get(self, request):
-        page = request.GET.get('page', 1)
+        page = request.GET.get(Keys.PAGE, 1)
+        show = request.GET.get(Keys.SHOW, 10)
 
         logs = EventLog.objects.all().order_by('-created_on')
+
+        # Check the tag filter
+        tag = request.GET.get(Keys.TAG, '')
+        if tag:
+            logs = logs.filter(tag__icontains=tag)
+
+        # Check the log level filter
+        log_level = request.GET.get(Keys.LOG_LEVEL, Keys.ALL).upper()
+        if log_level == Keys.ERROR:
+            logs = logs.filter(log_level=EventLog.ERROR)
+        elif log_level == Keys.DEBUG:
+            logs = logs.filter(log_level=EventLog.DEBUG)
+        elif log_level == Keys.WARN:
+            logs = logs.filter(log_level=EventLog.WARN)
+        elif log_level == Keys.INFO:
+            logs = logs.filter(log_level=EventLog.INFO)
+
+        # Check for the the message
+        message = request.GET.get(Keys.MESSAGE, '')
+        if message:
+            logs = logs.filter(message__icontains=message)
+
         paginator = Paginator(logs, 10)
 
         try:
@@ -128,7 +151,10 @@ class AllEventLogs(View):
         except EmptyPage:
             logs = paginator.page(paginator.num_pages)
 
-        context = {'logs': logs}
+        query_string = '&show=%s&tag=%s&level=%s&message=%s' % (
+            show, tag, log_level, message)
+
+        context = {'logs': logs, 'log_levels': EventLog.LOG_LEVELS, 'query_string': query_string}
         return render(request, self.template_name, context)
 
     def post(self, request):
