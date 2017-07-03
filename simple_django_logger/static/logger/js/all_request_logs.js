@@ -29,11 +29,4 @@ $(document).ready(function() {
             alert("Cannot eval JSON: " + log);
         }
     };
-
-    $('#btnDeleteLogs').click(function() {
-        var r = confirm('Are you sure you want to delete all request logs? It will irreparably delete all the request logs.');
-        if(r == true) {
-            $('#deleteLogs').submit();
-        }
-    });
 });

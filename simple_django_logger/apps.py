@@ -4,4 +4,4 @@ from django.apps import AppConfig
 
 
 class loggerConfig(AppConfig):
-    name = 'logger'
+    name = 'simple_django_logger'

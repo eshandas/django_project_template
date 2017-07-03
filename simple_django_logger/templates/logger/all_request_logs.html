@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block header_block %}
-  <title>Server Request Logs</title>
+  <title>Server Logs</title>
 
 
   <link rel="stylesheet" href="{% static 'plugins/highlightjs/highlight.min.css' %}" />
@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block body_block %}
-  <h2>Server Request Logs</h2>
+  <h2>Server Logs</h2>
 
   <form class="form-inline" action="{% url 'logger:all_request_logs' %}" method="GET">
     <h3>Filters</h3>
@@ -187,18 +187,18 @@
     <div class="col-md-10">
       <ul class="pagination pagination-md">
         {% if logs.has_previous %}
-          <li><a href="?page={{ logs.previous_page_number }}{{ query_string }}">Previous</a></li>
+          <li><a href="?page={{ logs.previous_page_number }}">Previous</a></li>
         {% endif %}
         <li class="disabled"><a href="#">Page {{ logs.number }} of {{ logs.paginator.num_pages }}</a></li>
         {% if logs.has_next %}
-          <li><a href="?page={{ logs.next_page_number }}{{ query_string }}">Next</a></li>
+          <li><a href="?page={{ logs.next_page_number }}">Next</a></li>
         {% endif %}
       </ul>
     </div>
     <div class="col-md-2">
-      <form  id="deleteLogs" action="{% url 'logger:all_request_logs' %}" method="POST">
+      <form action="{% url 'logger:all_request_logs' %}" method="POST">
         {% csrf_token %}
-        <a id="btnDeleteLogs" class="btn btn-danger pull-right">Delete All</a>
+        <button type="submit" class="btn btn-danger pull-right">Delete All</button>
       </form>
     </div>
   </div>

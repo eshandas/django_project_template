@@ -8,7 +8,6 @@ class Log(models.Model):
     DEBUG = 2
     WARN = 3
     INFO = 4
-    GENERIC = 5
     LOG_LEVELS = (
         (ERROR, 'ERROR'),
         (DEBUG, 'DEBUG'),
@@ -79,8 +78,8 @@ class Log(models.Model):
         auto_now_add=True)
 
     class Meta:
-        verbose_name = "Log"
-        verbose_name_plural = "Logs"
+        verbose_name = 'Log'
+        verbose_name_plural = 'Logs'
 
     def __unicode__(self):
         return self.exception_type
@@ -135,8 +134,48 @@ class RequestLog(models.Model):
         blank=True)
 
     class Meta:
-        verbose_name = "Request Log"
-        verbose_name_plural = "Request Logs"
+        verbose_name = 'Request Log'
+        verbose_name_plural = 'Request Logs'
 
     def __unicode__(self):
         return '%s %s' % (self.method, self.url)
+
+
+class EventLog(models.Model):
+    ERROR = 1
+    DEBUG = 2
+    WARN = 3
+    INFO = 4
+    LOG_LEVELS = (
+        (ERROR, 'ERROR'),
+        (DEBUG, 'DEBUG'),
+        (WARN, 'WARN'),
+        (INFO, 'INFO'),
+    )
+
+    log_level = models.IntegerField(
+        choices=LOG_LEVELS,
+        default=4)
+    message = models.TextField(
+        blank=True)
+    stack_trace = models.TextField(
+        blank=True)
+    tag = models.CharField(
+        max_length=255,
+        blank=True)
+    created_on = models.DateTimeField(
+        auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Event Log'
+        verbose_name_plural = 'Event Logs'
+
+    def __unicode__(self):
+        if self.log_level == self.ERROR:
+            return 'Error Log'
+        if self.log_level == self.DEBUG:
+            return 'Debug Log'
+        if self.log_level == self.WARN:
+            return 'Warn Log'
+        if self.log_level == self.INFO:
+            return 'Info Log'

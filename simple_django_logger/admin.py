@@ -3,6 +3,7 @@ from django.contrib import admin
 from .models import (
     Log,
     RequestLog,
+    EventLog,
 )
 
 
@@ -30,5 +31,15 @@ class RequestLogAdmin(admin.ModelAdmin):
         return False
 
 
+class EventLogAdmin(admin.ModelAdmin):
+    readonly_fields = [
+        'log_level', 'message', 'stack_trace', 'tag',
+        'created_on']
+
+    def has_add_permission(self, request):
+        return False
+
+
 admin.site.register(Log, LogAdmin)
 admin.site.register(RequestLog, RequestLogAdmin)
+admin.site.register(EventLog, EventLogAdmin)

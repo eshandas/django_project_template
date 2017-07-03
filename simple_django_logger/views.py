@@ -8,13 +8,14 @@ from django.core.urlresolvers import reverse
 from .models import (
     Log,
     RequestLog,
+    EventLog,
 )
+
 from .constants import Keys
 from .utils import Logger
-from .response import (
-    render as logger_render,
-)
+from .response import render as logger_render
 from .utils import RequestLogger
+from .utils import EventLogger
 
 
 class AllLogs(View):
@@ -113,6 +114,28 @@ class AllRequestLogs(View):
         return HttpResponseRedirect(reverse('logger:all_request_logs'))
 
 
+class AllEventLogs(View):
+    template_name = 'logger/all_event_logs.html'
+
+    def get(self, request):
+        page = request.GET.get('page', 1)
+
+        logs = EventLog.objects.all().order_by('-created_on')
+        paginator = Paginator(logs, 10)
+
+        try:
+            logs = paginator.page(page)
+        except EmptyPage:
+            logs = paginator.page(paginator.num_pages)
+
+        context = {'logs': logs}
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        EventLog.objects.all().delete()
+        return HttpResponseRedirect(reverse('logger:all_event_logs'))
+
+
 class TestLogs(View):
     template_name = 'logger/logger_test.html'
 
@@ -137,3 +160,16 @@ class TestRequestLogs(View):
             user=request.user,
             message='Some post request message')
         return render(request, self.template_name, {'text': response.text})
+
+
+class TestEventLogs(View):
+    template_name = 'logger/logger_test.html'
+
+    def get(self, request):
+        EventLogger.log_debug('Some debug message', tag='tag1')
+        EventLogger.log_error('Some error message', tag='tag2')
+        EventLogger.log_info('Some info message', tag='tag3')
+        EventLogger.log_warn('Some warn message', tag='tag4')
+
+        context = {'some': 'data'}
+        return render(request, self.template_name, context)
