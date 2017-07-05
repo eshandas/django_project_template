@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),
     url(r'^api/$', schema_view, name='swagger'),
     url(r'^health/$', health, name='health'),
-    url(r'^ping-celery/', PingCelery.as_view(), name='ping_celery'),
+    url(r'^api/%s/ping-celery/' % v1, PingCelery.as_view(), name='ping_celery'),
 
     # --- Appauth
     url(r'^api/%s/auth/' % v1, include('appauth.api_urls', namespace='appauth_api')),
