@@ -350,6 +350,15 @@ sudo nano /etc/nginx/sites-available/project
 server {
     listen 80 default_server;
 
+    # Depends on the server being setting up
+    # Following works only for something.com
+    # server_name something.com;
+
+    # Redirect all http requests to https
+    if ($http_x_forwarded_proto = 'http') {
+        return 301 https://$host$request_uri;
+    }
+
     location = /favicon.ico { access_log off; log_not_found off; }
 
     # Point to the static folder where static files are collected
@@ -366,7 +375,11 @@ server {
 
     # Point to the socket being used to talk to Gunicorn
     location / {
-        include proxy_params;
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
         client_max_body_size 50m;
         proxy_pass http://unix:/home/ubuntu/sites/project.sock;
     }

@@ -170,6 +170,9 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+##### Editor
+I highly recommend using Sublime Text 3. Add all the plugins by following this tutorial: https://realpython.com/blog/python/setting-up-sublime-text-3-for-full-stack-python-development/
+
 ##### Setting up Haystack and Elastic Search
 Not required for now. Check _docs in case if needed.
 
