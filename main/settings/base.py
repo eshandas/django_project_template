@@ -43,7 +43,6 @@ INSTALLED_APPS = (
     'djcelery',
     'django.contrib.humanize',
     'appauth',
-    'app_meta',
     'posts',
 )
 
