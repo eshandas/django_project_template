@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
     'simple_django_logger',
     'ckeditor',
+    'kv_settings',
     'corsheaders',
     'django_user_agents',
     'djcelery',

@@ -26,6 +26,7 @@ Fabric==1.12.0
 gunicorn==19.4.5
 #--- ONLY FOR LOCAL
 ipdb==0.10.3
+kv_settings==1.0.0
 pathlib2==2.1.0
 Pillow==3.2.0
 #--- ONLY FOR LOCAL
