@@ -28,7 +28,7 @@ class ObjectLogger(object):
         log.cookies = json.dumps(request.COOKIES)
 
         # --- Request meta info
-        log.meta = ','.join('"%s": "%s"' % (k, str(v)) for k, v in request.META.items())
+        log.meta = ','.join('"%s": "%s"' % (k, str(v)) for k, v in list(request.META.items()))
         log.meta = '{%s}' % log.meta
         log.meta = log.meta.replace('\\', '|')
 
@@ -168,7 +168,7 @@ class RequestObjectLogger(object):
         log.method = request.method
         log.url = request.url
         log.request_data = data if isinstance(data, str) else json.dumps(data)
-        headers = {val[0]: val[1] for val in request.headers.items()}
+        headers = {val[0]: val[1] for val in list(request.headers.items())}
         log.request_headers = json.dumps(headers)
 
         return log

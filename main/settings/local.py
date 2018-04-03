@@ -16,7 +16,7 @@ INSTALLED_APPS += (
 )
 
 
-MIDDLEWARE_CLASSES += (
+MIDDLEWARE += (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 

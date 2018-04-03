@@ -12,15 +12,15 @@ Class-based views
 Including another URLconf
     1. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url
+from django.urls import include, path
 from django.conf import settings
 
 from .views import IndexView, health
 from .api_views import PingCelery
 from django.contrib import admin
 
-from django_rest_swagger_enhancer.schema_generator import get_swagger_view, CustomSchemaGenerator
-schema_view = get_swagger_view(title='Django Boilerplate', generator_class=CustomSchemaGenerator)
+# from django_rest_swagger_enhancer.schema_generator import get_swagger_view, CustomSchemaGenerator
+# schema_view = get_swagger_view(title='Django Boilerplate', generator_class=CustomSchemaGenerator)
 
 v1 = settings.VERSION['v1']
 
@@ -28,26 +28,23 @@ admin.site.site_header = 'Django Boilerplate'
 
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', IndexView.as_view(), name='index'),
-    url(r'^api/$', schema_view, name='swagger'),
-    url(r'^health/$', health, name='health'),
-    url(r'^api/%s/ping-celery/' % v1, PingCelery.as_view(), name='ping_celery'),
+    path('admin/', admin.site.urls),
+    path('', IndexView.as_view(), name='index'),
+    # path('api/', schema_view, name='swagger'),
+    path('health/', health, name='health'),
+    path('api/%s/ping-celery/' % v1, PingCelery.as_view(), name='ping_celery'),
 
     # --- Appauth
-    url(r'^api/%s/auth/' % v1, include('appauth.api_urls', namespace='appauth_api')),
+    path('api/%s/auth/' % v1, include('appauth.api_urls')),
 
     # --- Posts
-    url(r'^posts/', include('posts.urls', namespace='posts')),
-    url(r'^api/%s/posts/' % v1, include('posts.api_urls', namespace='posts_api')),
-
-    # --- Errorlog
-    url(r'^logs/', include('simple_django_logger.urls', namespace='logger')),
+    path('posts/', include('posts.urls')),
+    path('api/%s/posts/' % v1, include('posts.api_urls')),
 ]
 
 
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
+        path('__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns

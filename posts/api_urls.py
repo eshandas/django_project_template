@@ -1,11 +1,12 @@
-from django.conf.urls import url
+from django.urls import path, re_path
 
 from .api_views import (
     AllPostsAPI,
     PostAPI,
 )
 
+app_name = 'posts_api'
 urlpatterns = [
-    url(r'^all/$', AllPostsAPI.as_view(), name='all_posts'),
-    url(r'^(?P<post_id>[0-9]+)/$', PostAPI.as_view(), name='post'),
+    path(r'all/', AllPostsAPI.as_view(), name='all_posts'),
+    re_path(r'^(?P<post_id>[0-9]+)/$', PostAPI.as_view(), name='post'),
 ]

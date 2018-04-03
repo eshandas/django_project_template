@@ -37,7 +37,7 @@ DOCS_DIR = '/home/yml/Documents/Stuff/Project/_docs/sphinx/'
 
 def stage_set(stage_name='dev'):
     env.stage = stage_name
-    for option, value in STAGES[env.stage].items():
+    for option, value in list(STAGES[env.stage].items()):
         setattr(env, option, value)
 
 
@@ -60,27 +60,27 @@ def production():
 
 
 def print_env_details(env, current_command):
-    print '\n\n'
-    print '...........................................'
-    print 'Command: %s' % current_command
-    print 'Updating Server: %s' % env.stage
-    print 'Hosts: %s' % env.hosts
-    print 'Host User: %s' % env.user
-    print 'Code Branch: %s' % env.code_branch
-    print '...........................................'
-    print '\n\n'
+    print('\n\n')
+    print('...........................................')
+    print('Command: %s' % current_command)
+    print('Updating Server: %s' % env.stage)
+    print('Hosts: %s' % env.hosts)
+    print('Host User: %s' % env.user)
+    print('Code Branch: %s' % env.code_branch)
+    print('...........................................')
+    print('\n\n')
 
 
 def print_banner(messages):
-    print '\n\n'
-    print '...........................................'
+    print('\n\n')
+    print('...........................................')
     if type(messages) == list:
         for message in messages:
-            print message
+            print(message)
     else:
-        print messages
-    print '...........................................'
-    print '\n\n'
+        print(messages)
+    print('...........................................')
+    print('\n\n')
 
 
 def update():

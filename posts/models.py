@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 from django.db import models
 
@@ -41,5 +41,5 @@ class Post(models.Model):
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
