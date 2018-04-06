@@ -19,8 +19,8 @@ from .views import IndexView, health
 from .api_views import PingCelery
 from django.contrib import admin
 
-# from django_rest_swagger_enhancer.schema_generator import get_swagger_view, CustomSchemaGenerator
-# schema_view = get_swagger_view(title='Django Boilerplate', generator_class=CustomSchemaGenerator)
+from rest_framework_swagger.views import get_swagger_view
+schema_view = get_swagger_view(title='Django Boilerplate APIs')
 
 v1 = settings.VERSION['v1']
 
@@ -30,7 +30,7 @@ admin.site.site_header = 'Django Boilerplate'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name='index'),
-    # path('api/', schema_view, name='swagger'),
+    path('api/', schema_view, name='swagger'),
     path('health/', health, name='health'),
     path('api/%s/ping-celery/' % v1, PingCelery.as_view(), name='ping_celery'),
 

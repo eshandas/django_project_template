@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -16,7 +17,7 @@ from .constants import (
 )
 
 
-class LoginAPI(APIView):
+class LoginAPI(GenericAPIView):
     serializer_class = AppUserSerializer
 
     def post(self, request):

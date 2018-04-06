@@ -1,4 +1,4 @@
-from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 from django.core.paginator import Paginator, EmptyPage
 from rest_framework.response import Response
 from rest_framework import status
@@ -23,7 +23,7 @@ from .constants import (
 )
 
 
-class AllPostsAPI(APIView):
+class AllPostsAPI(GenericAPIView):
     """
     API to get all posts or to add a new one.
 
@@ -94,7 +94,7 @@ class AllPostsAPI(APIView):
             generic_response(ResponseKeys.POST_SAVED))
 
 
-class PostAPI(APIView):
+class PostAPI(GenericAPIView):
     """
     An API to get, update or delete a post by its ID.
 
