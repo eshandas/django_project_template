@@ -4,7 +4,7 @@ celery==4.1.0
 circus==0.14.0
 coreapi==2.3.3
 coreschema==0.0.4
-Django==2.0.3
+Django==2.0.5
 django-celery==3.2.2
 django-ckeditor==5.4.0
 django-cors-headers==2.2.0
@@ -15,7 +15,7 @@ django-debug-toolbar==1.9.1
 django-extensions==2.0.6
 django-smtp-ssl==1.0
 django-user-agents==0.3.2
-djangorestframework==3.7.7
+djangorestframework==3.8.2
 django-rest-swagger==2.1.2
 #--- ONLY FOR LOCAL
 Fabric3==1.14.post1
