@@ -108,7 +108,7 @@ mkdir sites && cd sites
 
 * Clone the project
 ```
-git clone https://eshan_scientist@bitbucket.org/scientisttechnologies/project_api.git
+git clone https://github.com/eshandas/django_project_template.git
 ```
 
 * Rename project directory for consistency and cd
@@ -123,7 +123,6 @@ sudo nano ~/.virtualenvs/project/bin/postactivate
 ```
 
 * Add the following line
-```
 ...
 export DJANGO_SETTINGS_MODULE=main.settings.local
 ```
@@ -134,7 +133,6 @@ sudo nano ~/.virtualenvs/project/bin/postdeactivate
 ```
 
 * Add the following line
-```
 ...
 unset DJANGO_SETTINGS_MODULE
 ```
