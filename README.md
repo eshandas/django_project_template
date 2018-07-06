@@ -123,7 +123,7 @@ sudo nano ~/.virtualenvs/project/bin/postactivate
 ```
 
 * Add the following line
-...
+```
 export DJANGO_SETTINGS_MODULE=main.settings.local
 ```
 

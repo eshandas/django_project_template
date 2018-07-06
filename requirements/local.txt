@@ -5,7 +5,8 @@ circus==0.14.0
 coreapi==2.3.3
 coreschema==0.0.4
 Django==2.0.5
-django-celery==3.2.2
+django-celery-beat==1.1.1
+django-celery-results==1.0.1
 django-ckeditor==5.4.0
 django-cors-headers==2.2.0
 #--- ONLY FOR LOCAL

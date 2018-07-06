@@ -64,7 +64,7 @@ class AllPostsAPI(GenericAPIView):
             context,
             status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def put(self, request):
         """
         An API for creating a post. Only logged in user can create a post.
 

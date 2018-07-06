@@ -38,7 +38,8 @@ INSTALLED_APPS = (
     'ckeditor',
     'corsheaders',
     'django_user_agents',
-    'djcelery',
+    'django_celery_results',
+    'django_celery_beat',
     'django.contrib.humanize',
     'appauth',
     'posts',
@@ -158,14 +159,4 @@ CORS_EXPOSE_HEADERS = (
 
 
 # Celery related settings
-# task result life time until they will be deleted
-CELERY_TASK_RESULT_EXPIRES = 7 * 86400  # 7 days
-# needed for worker monitoring
-CELERY_SEND_EVENTS = True
-# where to store periodic tasks (needed for scheduler)
-CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
-
-
-# add following lines to the end of settings.py
-import djcelery
-djcelery.setup_loader()
+CELERY_RESULT_BACKEND = 'django-db'
