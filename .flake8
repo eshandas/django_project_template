@@ -1,0 +1,5 @@
+[flake8]
+ignore = F403, F405
+exclude = .git,*migrations*,_scratchpad*
+max-line-length = 119
+format = ${cyan}%(path)s${reset}:${yellow_bold}%(row)d${reset}:${green_bold}%(col)d${reset}: ${red_bold}%(code)s${reset} %(text)s

@@ -21,37 +21,11 @@ MIDDLEWARE += (
 )
 
 
-# Haystack connection
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
-    },
-}
+# List of site admins
+ADMINS = (
+    ('Eshan Das', 'eshan@scientisttechnologies.com'),
+)
 
 
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-# AWS Settings
-AWS_ACCESS_KEY_ID = 'xxxxxxxxxxxxxx'
-AWS_SECRET_ACCESS_KEY = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-
-
-# Email server settings
-# ABSOLUTELY REMOVE THE DUMMY EMAIL SERVER IN PRODUCTION!!!
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = 'xxxxxxxxxxxxxx'
-EMAIL_HOST_PASSWORD = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-EMAIL_FROM = 'someone@somewhere.com'
+# Celery Flower task url
+FLOWER_TASK_URL = 'http://127.0.0.1:5555/task/%s'

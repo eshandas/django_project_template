@@ -29,6 +29,7 @@
 *.sql
 *.sqlite
 *.sqlite3
+*.csv
 
 
 # OS generated files #
@@ -40,6 +41,12 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+.idea
+
+
+# Environment files #
+#####################
+.env
 
 
 # Celery files #
@@ -47,6 +54,7 @@ Thumbs.db
 celeryev.pid
 celerybeat.pid
 celerybeat-schedule
+celerybeat-schedule.db
 
 
 # Media Folder #
