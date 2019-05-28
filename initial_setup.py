@@ -51,7 +51,7 @@ def create_docker_compose_files():
         setting_file.write(content)
         setting_file.close()
 
-# Create .env file with:
+# Create .env file
 def create_env_file():
     print('Creating env file...')
 
@@ -70,7 +70,7 @@ def create_env_file():
     setting_file.close()
 
 
-# Replace "{{django_project}}" with the project name evereywhere
+# Prepare other files as well
 def prep_other_files():
     print('Prepare other files...')
     file_names = (
@@ -102,7 +102,7 @@ def main():
     create_docker_compose_files()
     create_env_file()
     prep_other_files()
-    # rename_project_folder()
+    rename_project_folder()
 
 
 if __name__ == '__main__':

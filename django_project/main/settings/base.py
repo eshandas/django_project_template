@@ -84,8 +84,7 @@ TEMPLATES = [
 
 
 # Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-import ipdb; ipdb.set_trace()
+# https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     'default': env.db()
 }
