@@ -57,7 +57,7 @@ def create_docker_compose_files():
 def create_env_file():
     print('Creating env file...')
 
-    setting_file = open('.env', mode='r')
+    setting_file = open('%s/.env' % DEFAULT_PROJECT_NAME, mode='r')
     template = Template(setting_file.read())
     setting_file.close()
 
@@ -67,7 +67,7 @@ def create_env_file():
 
     content = template.render(context) + '\n'
 
-    setting_file = open('.env', mode='w')
+    setting_file = open('%s/.env' % DEFAULT_PROJECT_NAME, mode='w')
     setting_file.write(content)
     setting_file.close()
 
@@ -79,6 +79,7 @@ def rename_project_folder():
 def main():
     generate_secret_keys()
     create_docker_compose_files()
+    create_env_file()
     # rename_project_folder()
 
 
