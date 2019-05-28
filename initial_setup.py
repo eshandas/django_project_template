@@ -6,6 +6,7 @@ from jinja2 import Template
 DEFAULT_PROJECT_NAME = 'django_project'
 PROJECT_SLUG = input('Enter your project\'s slug: ')
 # PROJECT_NAME = input('Enter your project\'s name: ')
+DB_URI = input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ')
 
 # Refresh all SECRET_KEYs in the settings files
 def generate_secret_keys():
@@ -53,6 +54,22 @@ def create_docker_compose_files():
 # Replace "{{django_project}}" with the project name evereywhere
 
 # Create .env file with:
+def create_env_file():
+    print('Creating env file...')
+
+    setting_file = open('.env', mode='r')
+    template = Template(setting_file.read())
+    setting_file.close()
+
+    context = {
+        'project_slug': PROJECT_SLUG,
+        'db_uri': DB_URI}
+
+    content = template.render(context) + '\n'
+
+    setting_file = open('.env', mode='w')
+    setting_file.write(content)
+    setting_file.close()
 
 # Rename the "django_project" folder name
 def rename_project_folder():
