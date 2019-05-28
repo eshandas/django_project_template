@@ -8,20 +8,25 @@ DEFAULT_PROJECT_NAME = 'django_project'
 # PROJECT_NAME = input('Enter your project\'s name: ')
 
 # Refresh all SECRET_KEYs in the settings files
-# Use this snippet: https://gist.github.com/ndarville/3452907
 def generate_secret_keys():
-    setting_file = open('%s/main/settings/local.py' % DEFAULT_PROJECT_NAME, mode='r')
-    template = Template(setting_file.read())
-    setting_file.close()
+    print('Generating Django secret keys...')
+    setting_files = ('local.py', 'production.py')
 
-    context = {
-        'secret_key': ''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])}
+    for setting_file in setting_files:
+        setting_file = open(
+            '%s/main/settings/%s' % (DEFAULT_PROJECT_NAME, setting_file), mode='r')
+        template = Template(setting_file.read())
+        setting_file.close()
 
-    content = template.render(context) + '\n'
+        context = {
+            'secret_key': ''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])}
 
-    setting_file = open('%s/main/settings/local.py' % DEFAULT_PROJECT_NAME, mode='w')
-    setting_file.write(content)
-    setting_file.close()
+        content = template.render(context) + '\n'
+
+        setting_file = open(
+            '%s/main/settings/%s' % (DEFAULT_PROJECT_NAME, setting_file), mode='w')
+        setting_file.write(content)
+        setting_file.close()
 
 
 # Replace "{{django_project}}" with the project name from production.yml and local.yml
