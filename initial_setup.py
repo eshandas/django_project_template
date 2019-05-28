@@ -79,9 +79,6 @@ EMAIL_FROM={{admin_email}}
 VIRTUALENV={{project_slug}}
 ''')
 
-    # setting_file = open('%s/.env' % DEFAULT_PROJECT_NAME, mode='r')
-    # setting_file.close()
-
     context = {
         'project_slug': PROJECT_SLUG,
         'db_uri': DB_URI,
