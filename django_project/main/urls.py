@@ -20,11 +20,11 @@ from .api_views import PingCelery
 from django.contrib import admin
 
 from rest_framework_swagger.views import get_swagger_view
-schema_view = get_swagger_view(title='{{ django_project_label }} APIs')
+schema_view = get_swagger_view(title='{{ project_name }} APIs')
 
 v1 = settings.VERSION['v1']
 
-admin.site.site_header = '{{ django_project_label }}'
+admin.site.site_header = '{{ project_name }}'
 
 
 urlpatterns = [
