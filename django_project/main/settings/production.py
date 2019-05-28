@@ -8,7 +8,7 @@ from .base import env
 DEBUG = False
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'sk&@v$5ab(59+m50nd4mf=gz31$djz6zan0(#brb5v+od2#jm&'
+SECRET_KEY = '{{secret_key}}'
 
 
 
