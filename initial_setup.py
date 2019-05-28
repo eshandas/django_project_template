@@ -4,15 +4,15 @@ from jinja2 import Template
 
 
 DEFAULT_PROJECT_NAME = 'django_project'
-# PROJECT_SLUG = input('Enter your project\'s slug: ')
+PROJECT_SLUG = input('Enter your project\'s slug: ')
 # PROJECT_NAME = input('Enter your project\'s name: ')
 
 # Refresh all SECRET_KEYs in the settings files
 def generate_secret_keys():
     print('Generating Django secret keys...')
-    setting_file_names = ('local.py', 'production.py')
+    file_names = ('local.py', 'production.py')
 
-    for file_name in setting_file_names:
+    for file_name in file_names:
         setting_file = open(
             '%s/main/settings/%s' % (DEFAULT_PROJECT_NAME, file_name), mode='r')
         template = Template(setting_file.read())
@@ -30,6 +30,25 @@ def generate_secret_keys():
 
 
 # Replace "{{django_project}}" with the project name from production.yml and local.yml
+def create_docker_compose_files():
+    print('Creating docker compose files...')
+    file_names = ('local.py', 'production.py')
+
+    for file_name in file_names:
+        setting_file = open(
+            '%s' % file_name, mode='r')
+        template = Template(setting_file.read())
+        setting_file.close()
+
+        context = {
+            'project_slug': PROJECT_SLUG}
+
+        content = template.render(context) + '\n'
+
+        setting_file = open(
+            '%s' % file_name, mode='w')
+        setting_file.write(content)
+        setting_file.close()
 
 # Replace "{{django_project}}" with the project name evereywhere
 
