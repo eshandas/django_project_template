@@ -6,7 +6,10 @@ from jinja2 import Template
 DEFAULT_PROJECT_NAME = 'django_project'
 PROJECT_SLUG = input('Enter your project\'s slug: ')
 PROJECT_NAME = input('Enter your project\'s name: ')
+ADMIN_NAME = input('Provide the admin\'s name: ')
+ADMIN_EMAIL = input('Provide the admin\'s email: ')
 DB_URI = input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ')
+
 
 # Refresh all SECRET_KEYs in the settings files
 def generate_secret_keys():
@@ -51,17 +54,38 @@ def create_docker_compose_files():
         setting_file.write(content)
         setting_file.close()
 
+
 # Create .env file
 def create_env_file():
     print('Creating env file...')
 
-    setting_file = open('%s/.env' % DEFAULT_PROJECT_NAME, mode='r')
-    template = Template(setting_file.read())
-    setting_file.close()
+    template = Template('''
+# DATABASES
+DATABASE_URL={{db_uri}}
+
+# AWS
+AWS_ACCESS_KEY=xxxxxxxxxxxxxxxxxxx
+AWS_ACCESS_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+AWS_REGION=us-west-2
+
+# EMAIL
+EMAIL_HOST=email-smtp.us-west-2.amazonaws.com
+EMAIL_PORT=465
+EMAIL_HOST_USER=xxxxxxxxxxxxxxxxxxx
+EMAIL_HOST_PASSWORD=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+EMAIL_FROM={{admin_email}}
+
+# ENVIRONMENT
+VIRTUALENV={{project_slug}}
+''')
+
+    # setting_file = open('%s/.env' % DEFAULT_PROJECT_NAME, mode='r')
+    # setting_file.close()
 
     context = {
         'project_slug': PROJECT_SLUG,
-        'db_uri': DB_URI}
+        'db_uri': DB_URI,
+        'admin_email': ADMIN_EMAIL}
 
     content = template.render(context) + '\n'
 
