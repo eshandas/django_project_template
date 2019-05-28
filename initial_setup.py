@@ -32,7 +32,7 @@ def generate_secret_keys():
 # Replace "{{django_project}}" with the project name from production.yml and local.yml
 def create_docker_compose_files():
     print('Creating docker compose files...')
-    file_names = ('local.py', 'production.py')
+    file_names = ('local.yml', 'production.yml')
 
     for file_name in file_names:
         setting_file = open(
