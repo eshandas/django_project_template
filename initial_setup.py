@@ -10,11 +10,11 @@ DEFAULT_PROJECT_NAME = 'django_project'
 # Refresh all SECRET_KEYs in the settings files
 def generate_secret_keys():
     print('Generating Django secret keys...')
-    setting_files = ('local.py', 'production.py')
+    setting_file_names = ('local.py', 'production.py')
 
-    for setting_file in setting_files:
+    for file_name in setting_file_names:
         setting_file = open(
-            '%s/main/settings/%s' % (DEFAULT_PROJECT_NAME, setting_file), mode='r')
+            '%s/main/settings/%s' % (DEFAULT_PROJECT_NAME, file_name), mode='r')
         template = Template(setting_file.read())
         setting_file.close()
 
@@ -24,7 +24,7 @@ def generate_secret_keys():
         content = template.render(context) + '\n'
 
         setting_file = open(
-            '%s/main/settings/%s' % (DEFAULT_PROJECT_NAME, setting_file), mode='w')
+            '%s/main/settings/%s' % (DEFAULT_PROJECT_NAME, file_name), mode='w')
         setting_file.write(content)
         setting_file.close()
 
