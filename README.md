@@ -1,6 +1,6 @@
 # Django Boilerplate local setup
 
-### Version 1.0.0
+### Version 2.0.0a
 
 ### About
 
@@ -35,160 +35,19 @@ A sample app for reference, which covers all the major aspects of Django develop
 
 Following is the tech stack being used for main project:
 
-* [Django 1.11] - The core Web Framework
-* [Django Rest Framework 3.5.3] - For creating REST APIs
-* [Sqlite] - As datastore
-* [Celery 3.1.23] - A task queue used for async processes and task scheduling
-* [Redis 2.8.4] - As message broker, a result backend for Celery and for caching
+* [Django 2.2] - The core Web Framework
+* [Django Rest Framework 3.9] - For creating REST APIs
+* [Celery 4.3] - A task queue used for async processes and task scheduling
 
 ### Project Setup
-* Update ubuntu
-```
-sudo apt-get update
-```
-
-* Install python-pip
-```
-sudo apt-get install python-pip python-dev git
-sudo apt-get install build-essential libssl-dev libffi-dev
-```
-
-* Install virtualenv and virtualenvwrapper:
-```
-sudo pip install virtualenv virtualenvwrapper
-sudo pip install --upgrade pip
-```
-
-* Create a backup of the .bashrc file
-```
-cp ~/.bashrc ~/.bashrc-org
-```
-
-* Create a directory to store all the virtual environments
-```
-mkdir ~/.virtualenvs
-```
-
-* Set WORKON_HOME to virtual environments directory
-```
-export WORKON_HOME=~/.virtualenvs
-```
-
-* Open bashrc file
-```
-sudo nano ~/.bashrc
-```
-
-* Add the following line at the end of bashrc file:
-```
-. /usr/local/bin/virtualenvwrapper.sh
-```
-
-* Re-source terminal using the following command
-```
-source ~/.bashrc
-```
-
-* Create new virtual environment
-```
-mkvirtualenv project
-```
-
-* Activate the virtual environment
-```
-workon project
-```
-
-
-##### Fetching and Prepping the Project
-* Create a parent folder called sites
-```
-mkdir sites && cd sites
-```
-
-* Clone the project
-```
-git clone https://github.com/eshandas/django_project_template.git
-```
-
-* Rename project directory for consistency and cd
-```
-mv project_api/ project && cd project
-```
-
-* Point the local settings file in the virtualenv postactivate hook
-```
-deactivate
-sudo nano ~/.virtualenvs/project/bin/postactivate
-```
-
-* Add the following line
-```
-export DJANGO_SETTINGS_MODULE=main.settings.local
-```
-
-* Remove the pointer once the env is deactivated
-```
-sudo nano ~/.virtualenvs/project/bin/postdeactivate
-```
-
-* Add the following line
-...
-unset DJANGO_SETTINGS_MODULE
-```
-
-
-> NOTE: Install the following dependencies before installing Pillow:
-
+* Initialize project setup by running:
 
 ```
-sudo apt-get install libjpeg-dev libfreetype6-dev zlib1g-dev
+python initial_setup.py
 ```
 
-* Install all the requirements
+* Post setup, delete the "initial_setup.py" file
+
 ```
-workon project
-pip install -r requirements/local.txt
+rm initial_setup.py
 ```
-**NOTE:** If scipy installation throws MemoryError, add swap memory. Install htop and check
-```
-sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
-sudo /sbin/mkswap /var/swap.1
-sudo /sbin/swapon /var/swap.1
-sudo apt-get install htop
-```
-
-* Run migrations
-```
-python manage.py migrate
-```
-
-* Test by running
-```
-python manage.py runserver
-```
-
-##### Editor
-I highly recommend using Sublime Text 3. Add all the plugins by following this tutorial: https://realpython.com/blog/python/setting-up-sublime-text-3-for-full-stack-python-development/
-
-##### Setting up Haystack and Elastic Search
-Not required for now. Check _docs in case if needed.
-
-##### Setting up Celery
-Not required for now. Check _docs in case if needed.
-
-##### Setting up Gunicorn
-Not required for now. Check _docs in case if needed.
-
-##### Setting up Nginx
-Not required for now. Check _docs in case if needed.
-
-##### Setup Supervisord
-Not required for now. Check _docs in case if needed.
-
-##### Documentation
-This application uses Sphinx for complete documentation and Django Rest Swagger for documenting APIs.
-
-* Sphinx: Please have a look at /_docs/sphinx/_build/html/index.html for Sphinx documentation.
-
-* Swagger: Please visit 127.0.0.1:8000/api/ for Swagger documentation
