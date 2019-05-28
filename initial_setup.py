@@ -61,6 +61,7 @@ def rename_project_folder():
 
 def main():
     generate_secret_keys()
+    create_docker_compose_files()
     # rename_project_folder()
 
 
