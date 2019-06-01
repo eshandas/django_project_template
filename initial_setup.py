@@ -1,14 +1,15 @@
 import os
 import random
+import re
 from jinja2 import Template
 
 
 DEFAULT_PROJECT_NAME = 'django_project'
 PROJECT_SLUG = input('Enter your project\'s slug: ')
-PROJECT_NAME = input('Enter your project\'s name: ')
-ADMIN_NAME = input('Provide the admin\'s name: ')
-ADMIN_EMAIL = input('Provide the admin\'s email: ')
-DB_URI = input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ')
+# PROJECT_NAME = input('Enter your project\'s name: ')
+# ADMIN_NAME = input('Provide the admin\'s name: ')
+# ADMIN_EMAIL = input('Provide the admin\'s email: ')
+# DB_URI = input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ')
 
 
 # Refresh all SECRET_KEYs in the settings files
@@ -17,20 +18,20 @@ def generate_secret_keys():
     file_names = ('local.py', 'production.py')
 
     for file_name in file_names:
-        setting_file = open(
+        target_file = open(
             '%s/main/settings/%s' % (DEFAULT_PROJECT_NAME, file_name), mode='r')
-        template = Template(setting_file.read())
-        setting_file.close()
+        template = Template(target_file.read())
+        target_file.close()
 
         context = {
             'secret_key': ''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])}
 
         content = template.render(context) + '\n'
 
-        setting_file = open(
+        target_file = open(
             '%s/main/settings/%s' % (DEFAULT_PROJECT_NAME, file_name), mode='w')
-        setting_file.write(content)
-        setting_file.close()
+        target_file.write(content)
+        target_file.close()
 
 
 # Replace "{{django_project}}" with the project name from production.yml and local.yml
@@ -39,20 +40,20 @@ def create_docker_compose_files():
     file_names = ('local.yml', 'production.yml')
 
     for file_name in file_names:
-        setting_file = open(
+        target_file = open(
             '%s' % file_name, mode='r')
-        template = Template(setting_file.read())
-        setting_file.close()
+        template = Template(target_file.read())
+        target_file.close()
 
         context = {
             'project_slug': PROJECT_SLUG}
 
         content = template.render(context) + '\n'
 
-        setting_file = open(
+        target_file = open(
             '%s' % file_name, mode='w')
-        setting_file.write(content)
-        setting_file.close()
+        target_file.write(content)
+        target_file.close()
 
 
 # Create .env file
@@ -86,9 +87,28 @@ VIRTUALENV={{project_slug}}
 
     content = template.render(context) + '\n'
 
-    setting_file = open('%s/.env' % DEFAULT_PROJECT_NAME, mode='w')
-    setting_file.write(content)
-    setting_file.close()
+    target_file = open('%s/.env' % DEFAULT_PROJECT_NAME, mode='w')
+    target_file.write(content)
+    target_file.close()
+
+
+# Prepare template files
+def prep_template_files():
+    print('Prepare template files...')
+    file_names = (
+        '%s/templates/site_templates/email_master.html' % DEFAULT_PROJECT_NAME,
+        '%s/templates/site_templates/site_master.html' % DEFAULT_PROJECT_NAME,)        
+
+    for file_name in file_names:
+        target_file = open(file_name, mode='r')
+        template = target_file.read()
+        target_file.close()
+
+        content = re.sub('{{\s*project_slug\s*}}', PROJECT_SLUG, template)
+
+        target_file = open(file_name, mode='w')
+        target_file.write(content)
+        target_file.close()
 
 
 # Prepare other files as well
@@ -98,9 +118,9 @@ def prep_other_files():
         '%s/main/urls.py' % DEFAULT_PROJECT_NAME,)
 
     for file_name in file_names:
-        setting_file = open(file_name, mode='r')
-        template = Template(setting_file.read())
-        setting_file.close()
+        target_file = open(file_name, mode='r')
+        template = Template(target_file.read())
+        target_file.close()
 
         context = {
             'project_slug': PROJECT_SLUG,
@@ -108,9 +128,9 @@ def prep_other_files():
 
         content = template.render(context) + '\n'
 
-        setting_file = open(file_name, mode='w')
-        setting_file.write(content)
-        setting_file.close()
+        target_file = open(file_name, mode='w')
+        target_file.write(content)
+        target_file.close()
 
 
 # Rename the "django_project" folder name
@@ -119,11 +139,12 @@ def rename_project_folder():
 
 
 def main():
-    generate_secret_keys()
-    create_docker_compose_files()
-    create_env_file()
-    prep_other_files()
-    rename_project_folder()
+    # generate_secret_keys()
+    # create_docker_compose_files()
+    # create_env_file()
+    # prep_other_files()
+    prep_template_files()
+    # rename_project_folder()
 
 
 if __name__ == '__main__':

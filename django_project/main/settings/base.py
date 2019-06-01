@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework_swagger',
     'ckeditor',
+    'widget_tweaks',
     'corsheaders',
     'django_user_agents',
     'django_celery_results',

@@ -1,0 +1,91 @@
+{% extends 'site_templates/site_master.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block header_block %}
+  <title>User Info</title>  
+{% endblock %}
+
+{% block body_name %}
+  User Info
+{% endblock %}
+
+{% block body_block %}
+  <div class="row">
+    <div class="col-md-8">
+      <h3 class="mt-none">My Information</h3>
+      <p class="mb-lg"><code>View and update</code> basic information about you and your business.</p>
+    </div>
+    <div class="col-md-4">
+      {% if user.is_active %}
+        {% include "site_sub_templates/display_message.html" with icon="fa-user" title="Account is <p class='fa fa-check' style='color: #2baab1'> Active</p>"|safe body=user.added_on|timesince %}
+      {% else %}
+        {% include "site_sub_templates/display_message.html" with icon="fa-user" title="Account is <p class='fa fa-times text-danger'> Inactive</p>"|safe body=user.added_on|timesince %}
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <section class="panel panel-featured panel-featured-primary">
+        <header class="panel-heading">
+          <div class="panel-actions">
+            <a href="#" class="fa fa-caret-down"></a>
+            <a href="#" class="fa fa-times"></a>
+          </div>
+          <h2 class="panel-title">Your Information</h2>
+        </header>
+        <div class="panel-body">
+          <form class="form-horizontal form-bordered"action="{% url 'appauth:userinfo' %}" method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="{{ form.email.id_for_label }}">Email</label>
+              <div class="col-md-6">
+                {{ form.email|add_class:"form-control" }}
+                {{ form.email.errors }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="{{ form.first_name.id_for_label }}">First Name</label>
+              <div class="col-md-6">
+                {{ form.first_name|add_class:"form-control" }}
+                {{ form.first_name.errors }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="{{ form.last_name.id_for_label }}">Last Name</label>
+              <div class="col-md-6">
+                {{ form.last_name|add_class:"form-control" }}
+                {{ form.last_name.errors }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="{{ form.phone_number.id_for_label }}">Phone #</label>
+              <div class="col-md-6">
+                {{ form.phone_number|add_class:"form-control" }}
+                {{ form.phone_number.errors }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Is verified</label>
+              <div class="col-md-6">
+                {% if user.is_verified == True %}
+                  <span class='fa fa-check-circle correct-md'></span>
+                {% else %}
+                  <span class='fa fa-times-circle incorrect-md'></span>
+                {% endif %}                
+              </div>
+            </div>
+            <div class="text-right mr-lg">
+              <button type="submit" class="btn btn-primary ml-sm">Update</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js_block %}{% endblock %}

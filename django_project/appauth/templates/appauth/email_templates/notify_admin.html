@@ -1,0 +1,27 @@
+{% extends 'site_templates/email_master.html' %}
+
+{% block body_head %}
+    <h2>A merchant has registered!</h2>
+{% endblock %}
+
+{% block body %}
+    <p >Hi,</p>
+    <p>A new merchant has registered in our system.</p>
+    <p>
+        <h4>Name: {{ merchant_admin.name }}</h4>
+        <h4>Email: {{ merchant_admin.email }}</h4>
+        <h4>Phone Number: {{ merchant_admin.phone_number }}</h4>
+    </p>
+{% endblock %}
+
+{% block body_footer %}
+    <tr>
+        <td bgcolor="#3C3F42" align="center" style="border-radius:4px;" width="200" height="50">
+            <div class="contentEditableContainer contentTextEditable">
+                <a target="_blank" href="{{ url }}" class="link2">
+                    <div class="contentEditable" align='center'>See More</div>
+                </a>
+            </div>
+        </td>
+    </tr>
+{% endblock %}

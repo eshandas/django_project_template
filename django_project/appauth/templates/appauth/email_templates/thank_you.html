@@ -1,0 +1,22 @@
+{% extends 'site_templates/email_master.html' %}
+
+{% block body_head %}
+    <h2>Thank you!</h2>
+{% endblock %}
+
+{% block body %}
+    <p>Hi {{ name }},</p>
+    <p>Thank you for choosing us. Please let us know in case of any queries or confusion.</p>
+{% endblock %}
+
+{% block body_footer %}
+    <tr>
+        <td bgcolor="#3C3F42" align="center" style="border-radius:4px;" width="200" height="50">
+            <div class="contentEditableContainer contentTextEditable">
+                <a target='_blank' href="{{ url }}" class='link2'>
+                    <div class="contentEditable" align='center'>Visit Dashboard</div>
+                </a>
+            </div>
+        </td>
+    </tr>
+{% endblock %}

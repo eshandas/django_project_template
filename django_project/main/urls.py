@@ -20,11 +20,11 @@ from .api_views import PingCelery
 from django.contrib import admin
 
 from rest_framework_swagger.views import get_swagger_view
-schema_view = get_swagger_view(title='{{ project_name }} APIs')
+schema_view = get_swagger_view(title='Sales Sentry APIs')
 
 v1 = settings.VERSION['v1']
 
-admin.site.site_header = '{{ project_name }}'
+admin.site.site_header = 'Sales Sentry'
 
 
 urlpatterns = [
@@ -35,6 +35,7 @@ urlpatterns = [
     path('api/%s/ping-celery/' % v1, PingCelery.as_view(), name='ping_celery'),
 
     # --- Appauth
+    path('auth/', include('appauth.urls')),
     path('api/%s/auth/' % v1, include('appauth.api_urls')),
 
     # --- Posts

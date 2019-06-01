@@ -1,11 +1,12 @@
-from django.conf.urls import url
+from django.urls import path
 
 from .api_views import (
     LoginAPI,
     LogoutAPI,
 )
 
-urlpatterns = [
-    url(r'^login/$', LoginAPI.as_view(), name='login'),
-    url(r'^logout/$', LogoutAPI.as_view(), name='logout'),
-]
+app_name = 'appauth_api'
+urlpatterns = (
+    path('login/', LoginAPI.as_view(), name='login'),
+    path('logout/', LogoutAPI.as_view(), name='logout'),
+)

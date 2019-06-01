@@ -1,0 +1,176 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!-- Bootstrap Core CSS -->
+        <link href="{% static 'sb-admin-2/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+        <!-- MetisMenu CSS -->
+        <link href="{% static 'sb-admin-2/vendor/metisMenu/metisMenu.min.css' %}" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="{% static 'sb-admin-2/dist/css/sb-admin-2.css' %}" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href="{% static 'sb-admin-2/vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
+        <!-- Animate CSS -->
+        <link href="{% static 'plugins/bootstrap-notify/animate.css' %}" rel="stylesheet" type="text/css">
+
+        <!-- Custom Site CSS -->
+        <link href="{% static 'css/site.css' %}" rel="stylesheet" type="text/css">
+        <img src="{% static 'images/logo.png' %}" height="35" />
+
+        {% block header_block %}{% endblock %}
+
+        <!-- HTML5 Shim and Respond.js' %} IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js' %} doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js' %}"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js' %}/1.4.2/respond.min.js' %}"></script>
+        <![endif]-->
+
+    </head>
+    <body>
+        <!-- ----------------------------- HIDDEN SECTION ------------------------------- -->
+        <div id="notificationContainer"></div>
+        {% block hidden_block %}{% endblock %}
+
+        <div id="wrapper">
+            <!-- Navigation -->
+            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/"><img src="{% static 'images/logo.png' %}" height="35" /></a>
+                    <a href="/"><span class="navbar-brand">Your Application</span></a>
+                </div>
+                <!-- /.navbar-header -->
+
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <a href="{% url 'shopify:instructions' %}"><i class="fa fa-book fa-fw"></i> Instructions</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'connect:raise_ticket' %}"><i class="fa fa-support fa-fw"></i> Support</a>
+                    </li>
+                    <!-- /.dropdown -->
+                    {% if request.user.is_authenticated and not request.user.is_admin %}
+                    <li>
+                        <input type="hidden" id="switchToShopifyStoreUrl" value="{% url 'shopify:switch_shopify_store' %}" />
+                        <input type="hidden" id="previousShopifyStore" value="{{ request.user.shopify_store.id }}" />
+                        <select id="selectShopifyStore" class="form-control">
+                            <option value="0">Select Shopify Store</option>
+                            {% for shopify_store in request.user.shopify_stores %}
+                            <option value="{{ shopify_store.id }}" {% if shopify_store.id == request.user.shopify_store.id %}selected{% endif %}>{{ shopify_store.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </li>
+                    {% endif %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                        </a>
+                        {% if user.is_anonymous %}
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="{% url 'appauth:login' %}"><i class="fa fa-sign-in fa-fw"></i> Login</a>
+                                </li>
+                                <li><a href="{% url 'appauth:register_merchant' %}"><i class="fa fa-user fa-fw"></i> Register</a>
+                                </li>
+                            </ul>
+                        {% else %}
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="{% url 'appauth:info' %}"><i class="fa fa-user fa-fw"></i> {{ user.name }}</a>
+                                </li>
+                                <li><a href="{% url 'appauth:change_password' %}"><i class="fa fa-lock fa-fw"></i> Change password</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a href="{% url 'appauth:logout' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                                </li>
+                            </ul>
+                        {% endif %}
+                        <!-- /.dropdown-user -->
+                    </li>
+                    <!-- /.dropdown -->
+                </ul>
+                <!-- /.navbar-top-links -->
+
+            <!-- Page Content -->
+            <div id="page-wrapper" {% if user.is_anonymous %}style="margin: 0 0 0 0;"{% endif %}>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">{% block body_name %}{% endblock %}</h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- ----------------------------- BODY SECTION ------------------------------- -->
+                {% block body_block %}{% endblock %}
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /#page-wrapper -->
+        </div>
+        <!-- /#wrapper -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="siteModal" tabindex="-1" role="dialog" aria-labelledby="siteModalLabel" aria-hidden="true">
+            <div class="vertical-alignment-helper">
+                <div class="modal-dialog vertical-align-center">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            {% block modal_header_block %}{% endblock %}
+                        </div>
+                        <div class="modal-body">
+                            {% block modal_body_block %}{% endblock %}
+                        </div>
+                        <div class="modal-footer">
+                            {% block modal_footer_block %}{% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if alertMessageType %}
+            <input type="hidden" id="alertIcon" value="{{ alertIcon }}">
+            <input type="hidden" id="alertMessageType" value="{{ alertMessageType }}">
+            <input type="hidden" id="alertMessage" value="{{ alertMessage }}">
+        {% endif %}
+
+
+        <!-- jQuery -->
+        <script src="{% static 'sb-admin-2/vendor/jquery/jquery.min.js' %}"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static 'sb-admin-2/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{% static 'sb-admin-2/vendor/metisMenu/metisMenu.min.js' %}"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="{% static 'sb-admin-2/dist/js/sb-admin-2.js' %}"></script>
+
+        <!-- Bootstrap Notify -->
+        <script src="{% static 'plugins/bootstrap-notify/bootstrap-notify.min.js' %}"></script>        
+
+        <!-- Global Javascript -->
+        <script src="{% static 'js/site.js' %}"></script>
+
+        <!-- ----------------------------- JAVASCRIPT SECTION ------------------------------- -->
+        {% block js_block %}{% endblock %}
+    </body>
+
+</html>

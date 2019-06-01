@@ -1,19 +1,53 @@
-{% extends 'site_templates/site_master.html' %}
+{% extends 'site_templates/signup_master.html' %}
 {% load staticfiles %}
 
-{% block header_block %}
-    <title>Welcome!</title>
+{% block 'page_title' %}
+  {{project_slug}}
 {% endblock %}
 
-{% block body_block %}
-    <h1>Welcome to Project</h1>
-    <p>
-        <a href="{% url 'admin:login' %}">Admin</a>
-    </p>
-    <p>
-        {# <a href="{% url 'swagger' %}">Swagger</a> #}
-    </p>
-    <p>
-        <a href="{% url 'posts:all_posts' %}">Posts</a>
-    </p>
+{% block 'page_header' %}
+  <style type="text/css">
+    @import url('https://fonts.googleapis.com/css?family=Numans');
+
+    html,body {
+      background-image: url('{% static "images/background.jpg" %}');
+      background-size: cover;
+      background-repeat: no-repeat;
+      height: 100%;
+      font-family: 'Numans', sans-serif;
+    }
+
+    .body-sign {
+      margin: 0 20% 0 auto;
+    }
+  </style>
+{% endblock %}
+
+{% block 'panel_title' %}
+  Welcome
+{% endblock %}
+
+{% block 'panel_body' %}
+  <form class="form-horizontal">
+    <div class="row">
+      <div class="col-sm-8">
+        <p>Click the login button to go to login</p>
+      </div>
+      <div class="col-sm-4 text-right">
+        <a href="{% url 'appauth:login' %}" class="btn btn-primary hidden-xs">Login</a>
+      </div>
+    </div>
+    
+
+    {% if message %}
+      <br />
+      <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        {{ message }}
+      </div>
+    {% endif %}
+  </form>
+{% endblock %}
+
+{% block js_block %}
 {% endblock %}

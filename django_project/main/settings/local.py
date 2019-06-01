@@ -8,11 +8,7 @@ from .base import env
 DEBUG = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '{{secret_key}}'
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = 'k@^dz-i9xdzz+ae=(r97j08cmia(gh73@me!r%-o__qp(1_z8_'
 
 
 INTERNAL_IPS = ['127.0.0.1']

@@ -1,0 +1,65 @@
+{% extends 'site_templates/signup_master.html' %}
+{% load staticfiles %}
+
+{% block 'page_title' %}
+  Login
+{% endblock %}
+
+{% block 'panel_title' %}
+  Sign In
+{% endblock %}
+
+{% block 'panel_body' %}
+  <form class="form-horizontal" role="form" action="{{ request.get_full_path }}" method="POST">
+    {% csrf_token %}
+    <div class="form-group mb-lg">
+      <label>Email</label>
+      <div class="input-group input-group-icon">
+        <input name="email" type="text" class="form-control input-lg" tabindex="1" autofocus />
+        <span class="input-group-addon">
+          <span class="icon icon-lg">
+            <i class="fa fa-user"></i>
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group mb-lg">
+      <div class="clearfix">
+        <label class="pull-left">Password</label>
+        <a href="{% url 'appauth:forgot_password' %}" class="pull-right">Lost Password?</a>
+      </div>
+      <div class="input-group input-group-icon">
+        <input name="password" type="password" class="form-control input-lg" tabindex="2" />
+        <span class="input-group-addon">
+          <span class="icon icon-lg">
+            <i class="fa fa-lock"></i>
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="checkbox-custom checkbox-default">
+          <input id="RememberMe" name="rememberme" type="checkbox"/>
+          <label for="RememberMe">Remember Me</label>
+        </div>
+      </div>
+      <div class="col-sm-4 text-right">
+        <button type="submit" class="btn btn-primary hidden-xs" tabindex="3">Sign In</button>
+      </div>
+    </div>
+    <p class="text-center">Don't have an account yet? <a href="" tabindex="4">Sign Up!</a>
+
+    {% if message %}
+      <br />
+      <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        {{ message }}
+      </div>
+    {% endif %}
+  </form>
+{% endblock %}
+
+{% block 'js_block' %}{% endblock %}

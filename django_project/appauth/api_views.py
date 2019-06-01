@@ -1,11 +1,12 @@
 from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 
 from utils.response_handler import generic_response
+
+from .api_authentications import CsrfExemptSessionAuthentication
 
 from .serializers import (
     AppUserSerializer,
@@ -16,8 +17,13 @@ from .constants import (
     ResponseKeys,
 )
 
+from django.conf import settings
+from django.urls import reverse
 
-class LoginAPI(GenericAPIView):
+from global_tasks.email_tasks.emailer import Emailer
+
+
+class LoginAPI(APIView):
     serializer_class = AppUserSerializer
 
     def post(self, request):
@@ -83,7 +89,7 @@ class LogoutAPI(APIView):
                 "sessionId": "token"
             }
         """
-        context = {"loggedOut": True}
+        context = {'loggedOut': True}
         return Response(
             context,
             status=status.HTTP_200_OK)

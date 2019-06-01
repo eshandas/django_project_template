@@ -1,27 +1,223 @@
-<!doctype html>
 {% load staticfiles %}
+<!DOCTYPE html>
+<html class="fixed sidebar-left-collapsed" lang="en">
+  <head>
+    <!-- Basic -->
+    <meta charset="UTF-8">
 
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-        <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.3.6/css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'plugins/jquery-ui-1.11.4.custom/jquery-ui.min.css' %}">
+    <!-- Web Fonts  -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 
-        {% block header_block %}{% endblock %}
-    </head>
-    <body>
-        {% block hidden_block %}{% endblock %}
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="{% static 'octopus/vendor/bootstrap/css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'octopus/vendor/font-awesome/css/font-awesome.css' %}" />
+    <link rel="stylesheet" href="{% static 'octopus/vendor/magnific-popup/magnific-popup.css' %}" />
+    <link rel="stylesheet" href="{% static 'octopus/vendor/bootstrap-datepicker/css/datepicker3.css' %}" />
 
-        {% block body_block %}{% endblock %}
+    <!-- Specific Page Vendor CSS -->
+    <link rel="stylesheet" href="{% static 'octopus/vendor/pnotify/pnotify.custom.css' %}" />
 
-        {% block footer_block %}{% endblock %}
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="{% static 'octopus/stylesheets/theme.css' %}" />
+
+    <!-- Skin CSS -->
+    <link rel="stylesheet" href="{% static 'octopus/stylesheets/skins/default.css' %}" />
+
+    <!-- Theme Custom CSS -->
+    <link rel="stylesheet" href="{% static 'octopus/stylesheets/theme-custom.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+
+    <!-- Head Libs -->
+    <script src="{% static 'octopus/vendor/modernizr/modernizr.js' %}"></script>
+
+    {% block header_block %}{% endblock %}
+  </head>
+  <body>
+    <!-- ----------------------------- HIDDEN SECTION ------------------------------- -->
+    {% if alertMessageType %}
+      <input type="hidden" id="alertTitle" value="{{ alertTitle }}">
+      <input type="hidden" id="alertMessageType" value="{{ alertMessageType }}">
+      <input type="hidden" id="alertMessage" value="{{ alertMessage }}">
+    {% endif %}
+    {% block hidden_block %}{% endblock %}
+
+    <section class="body">
+      <!-- start: header -->
+      <header class="header">
+        <div class="logo-container">
+          <a href="{% url 'appauth:dashboard' %}" class="logo">
+            <img src="{% static 'images/logo.png' %}" height="35" />
+          </a>
+          <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+            <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+          </div>
+        </div>
+        <!-- start: search & user box -->
+        <div class="header-right">
+          <span class="separator"></span>
+          {% if user.is_anonymous %}
+            <div id="userbox" class="userbox">
+              <a href="" style="color: #734ba9; font-size: medium;"><i class="fa fa-user"></i> Register</a>
+            </div>
+            <span class="separator"></span>
+            <div id="userbox" class="userbox">
+              <a href="" style="color: #734ba9; font-size: medium;"><i class="fa fa-sign-in"></i> Sign In</a>
+            </div>
+          {% else %}
+            <div id="userbox" class="userbox">
+              <a href="#" data-toggle="dropdown">
+                <figure class="profile-picture">
+                  <img src="{% static 'octopus/images/!logged-user.jpg' %}" alt="Joseph Doe" class="img-circle" data-lock-picture="assets/images/!logged-user.jpg' %}" />
+                </figure>
+                <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
+                  <span class="name">{{ user.name }}</span>
+                  <span class="role">administrator</span>
+                </div>
+                <i class="fa custom-caret"></i>
+              </a>
+              <div class="dropdown-menu">
+                <ul class="list-unstyled">
+                  <li class="divider"></li>
+                  <li><a href="{% url 'appauth:userinfo' %}"><i class="fa fa-user"></i> My account</a>
+                  </li>
+                  <li><a href="{% url 'appauth:change_password' %}"><i class="fa fa-lock"></i> Change password</a>
+                  </li>
+                  <li class="divider"></li>
+                  <li><a href="{% url 'appauth:logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+        <!-- end: search & user box -->
+      </header>
+      <!-- end: header -->
+      <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <aside id="sidebar-left" class="sidebar-left">
+          <div class="sidebar-header">
+            <div class="sidebar-title">
+              Navigation
+            </div>
+            <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+              <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+            </div>
+          </div>
+          <div class="nano">
+            <div class="nano-content">
+              <nav id="mainMenu" class="nav-main" role="navigation">
+                <ul class="nav nav-main">
+                  <li data-toggle="tooltip" data-placement="right" title="See clicks, impressions and other performance charts">
+                    <a href=""><i class="fa fa-bar-chart-o"></i><span>Track Performance</span></a>
+                  </li>
+                  <li data-toggle="tooltip" data-placement="right" title="Set colors, fonts and related visual settings">
+                    <a href=""><i class="fa fa-image"></i><span>Styling</span></a>
+                  </li>
+                  <li data-toggle="tooltip" data-placement="right" title="Choose which widgets (upsell/cross-sell etc.) to show on store front">
+                    <a href=""><i class="fa fa-gears"></i><span>Add/Remove Widgets</span></a>
+                  </li>
+                  <li data-toggle="tooltip" data-placement="right" title="Set number of products in widgets and also improve quality of recommendations">
+                    <a href=""><i class="fa fa-wrench"></i><span>Improve Recommendations</span></a>
+                  </li>
+                  <li data-toggle="tooltip" data-placement="right" title="Check your bill related details">
+                    <a href=""><i class="fa fa-money"></i><span>Billing</span></a>
+                  </li>
+                </ul>
+              </nav>
+              <hr class="separator" />
+              <div class="sidebar-widget widget-tasks">
+                <div class="widget-header">
+                  <h6>Help</h6>
+                  <div class="widget-toggle">+</div>
+                </div>
+              </div>
+              <nav id="supportMenu" class="nav-main" role="navigation">
+                <ul class="nav nav-main">
+                  <li data-toggle="tooltip" data-placement="right" title="A quick manual on how to use {{project_slug}}">
+                    <a href=""><i class="fa fa-book"></i><span>Instructions</span></a>
+                  </li>
+                  <li data-toggle="tooltip" data-placement="right" title="Create a support ticket for any kind of query, complain or feedback">
+                    <a href=""><i class="fa fa-support"></i><span>Support</span></a>
+                  </li>
+                </ul>
+              </nav>
+              <hr class="separator" />
+              <div class="sidebar-widget widget-stats copyright-info">
+                <div class="widget-content">
+                  <ul>
+                    <li>
+                      <p class="text-center text-muted mt-md mb-md">&copy; Copyright {% now 'Y' %}. All rights reserved by <a href="https://scentisttechnologies.com">Scientist Technologies</a>.</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <!-- end: sidebar -->
+        <section role="main" class="content-body">
+          <header class="page-header">
+            <h2>{% block body_name %}{% endblock %}</h2>
+            {% if enable_sidebar == True %}
+            <div class="right-wrapper pull-right">
+              <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+            </div>
+            {% endif %}
+          </header>
+          <!-- start: page -->
+          {% block body_block %}{% endblock %}
+          <!-- end: page -->
+        </section>
+      </div>
+
+      {% block 'sidebar' %}
+      {% endblock %}
+    </section>
+
+    <!-- ----------------------------- BODY SECTION ------------------------------- -->
+
+    {% block modal_header_block %}{% endblock %}
+    {% block modal_body_block %}{% endblock %}
+    {% block modal_footer_block %}{% endblock %}
+    {% if alertMessageType %}
+      <input type="hidden" id="alertIcon" value="{{ alertIcon }}">
+      <input type="hidden" id="alertMessageType" value="{{ alertMessageType }}">
+      <input type="hidden" id="alertMessage" value="{{ alertMessage }}">
+    {% endif %}
+
+
+    <!-- Global Javascript -->
+    <!-- Vendor -->
+    <script src="{% static 'octopus/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'octopus/vendor/jquery-browser-mobile/jquery.browser.mobile.js' %}"></script>
+    <script src="{% static 'octopus/vendor/bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static 'octopus/vendor/nanoscroller/nanoscroller.js' %}"></script>
+    <script src="{% static 'octopus/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'octopus/vendor/magnific-popup/magnific-popup.js' %}"></script>
+    <script src="{% static 'octopus/vendor/jquery-placeholder/jquery.placeholder.js' %}"></script>
     
-        <!-- ----------------------------- JAVASCRIPT SECTION ------------------------------- -->
-        <script type="text/javascript" src="{% static 'plugins/jquery-2.2.2.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'plugins/bootstrap-3.3.6/js/bootstrap.js' %}"></script>
-        <script type="text/javascript" src="{% static 'plugins/jquery-ui-1.11.4.custom/jquery-ui.min.js' %}"></script>
-        {% block js_block %}{% endblock %}
-    </body>
-<html>
+    {% block vendor_js_block %}{% endblock %}
+
+    <!-- Specific Page Vendor -->
+    <script src="{% static 'octopus/vendor/pnotify/pnotify.custom.js' %}"></script>
+    
+    <!-- Theme Base, Components and Settings -->
+    <script src="{% static 'octopus/javascripts/theme.js' %}"></script>
+    
+    <!-- Theme Custom -->
+    <script src="{% static 'octopus/javascripts/theme.custom.js' %}"></script>
+    
+    <!-- Theme Initialization Files -->
+    <script src="{% static 'octopus/javascripts/theme.init.js' %}"></script>
+
+    <script src="{% static 'js/site.js' %}"></script>
+    <!-- ----------------------------- JAVASCRIPT SECTION ------------------------------- -->
+
+    {% block js_block %}{% endblock %}
+  </body>
+</html>

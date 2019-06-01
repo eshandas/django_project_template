@@ -1,0 +1,31 @@
+.correct {
+    color: #2baab1
+}
+
+.incorrect {
+    color: red;
+}
+
+.correct-md {
+  padding-top: 8px;
+  font-size: 20px;
+  color: #2baab1
+}
+
+.incorrect-md {
+  padding-top: 8px;
+  font-size: 20px;
+  color: #d2322d;
+}
+
+.copyright-info {
+  position: fixed;
+  width: 15%;
+  bottom: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+/*html.sidebar-left-collapsed .sidebar-left {
+    width: 60px;
+}*/
