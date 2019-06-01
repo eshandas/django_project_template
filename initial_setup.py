@@ -6,10 +6,10 @@ from jinja2 import Template
 
 DEFAULT_PROJECT_NAME = 'django_project'
 PROJECT_SLUG = input('Enter your project\'s slug: ')
-# PROJECT_NAME = input('Enter your project\'s name: ')
-# ADMIN_NAME = input('Provide the admin\'s name: ')
-# ADMIN_EMAIL = input('Provide the admin\'s email: ')
-# DB_URI = input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ')
+PROJECT_NAME = input('Enter your project\'s name: ')
+ADMIN_NAME = input('Provide the admin\'s name: ')
+ADMIN_EMAIL = input('Provide the admin\'s email: ')
+DB_URI = input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ')
 
 
 # Refresh all SECRET_KEYs in the settings files
@@ -97,7 +97,9 @@ def prep_template_files():
     print('Prepare template files...')
     file_names = (
         '%s/templates/site_templates/email_master.html' % DEFAULT_PROJECT_NAME,
-        '%s/templates/site_templates/site_master.html' % DEFAULT_PROJECT_NAME,)        
+        '%s/templates/site_templates/site_master.html' % DEFAULT_PROJECT_NAME,
+        '%s/templates/site_templates/blank_page.html' % DEFAULT_PROJECT_NAME,
+        '%s/templates/index.html' % DEFAULT_PROJECT_NAME,)
 
     for file_name in file_names:
         target_file = open(file_name, mode='r')
@@ -105,6 +107,7 @@ def prep_template_files():
         target_file.close()
 
         content = re.sub('{{\s*project_slug\s*}}', PROJECT_SLUG, template)
+        content = re.sub('{{\s*project_name\s*}}', PROJECT_NAME, template)
 
         target_file = open(file_name, mode='w')
         target_file.write(content)
@@ -139,12 +142,12 @@ def rename_project_folder():
 
 
 def main():
-    # generate_secret_keys()
-    # create_docker_compose_files()
-    # create_env_file()
-    # prep_other_files()
+    generate_secret_keys()
+    create_docker_compose_files()
+    create_env_file()
+    prep_other_files()
     prep_template_files()
-    # rename_project_folder()
+    rename_project_folder()
 
 
 if __name__ == '__main__':
