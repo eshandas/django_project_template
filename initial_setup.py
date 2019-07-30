@@ -10,7 +10,7 @@ PROJECT_SLUG = raw_input('Enter your project\'s slug: ') or 'meh_project'
 PROJECT_NAME = raw_input('Enter your project\'s name: ') or 'Meh Project'
 ADMIN_NAME = raw_input('Provide the admin\'s name: ') or 'Eshan Das'
 ADMIN_EMAIL = raw_input('Provide the admin\'s email: ') or 'eshandasnit@gmail.com'
-DB_URI = raw_input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ') or 'postgresql://eshan:charli3!@127.0.0.1:9000/meh'
+DB_URI = raw_input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ') or 'postgresql://eshan:password@127.0.0.1:9000/meh'
 
 
 def _get_list_of_files(dir_name):
@@ -183,8 +183,8 @@ def prep_docker_files():
 def setup_flake8():
     # http://flake8.pycqa.org/en/latest/user/using-hooks.html
     print('Setup flake8...')
-    subprocess.run(["flake8", "--install-hook", "git"], capture_output=True)
-    subprocess.run(["git config", "--bool", "flake8.strict", "true"], capture_output=True)
+    subprocess.run(["flake8", "--install-hook", "git"])
+    subprocess.run(["git config", "--bool", "flake8.strict", "true"])
 
 
 # Rename the "django_project" folder name
@@ -199,7 +199,7 @@ def main():
     prep_other_files()
     prep_template_files()
     prep_docker_files()
-    setup_flake8()
+    # setup_flake8()
     rename_project_folder()
 
 
