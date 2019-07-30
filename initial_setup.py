@@ -1,15 +1,36 @@
 import os
 import random
 import re
+import subprocess
 from jinja2 import Template
 
 
 DEFAULT_PROJECT_NAME = 'django_project'
-PROJECT_SLUG = input('Enter your project\'s slug: ')
-PROJECT_NAME = input('Enter your project\'s name: ')
-ADMIN_NAME = input('Provide the admin\'s name: ')
-ADMIN_EMAIL = input('Provide the admin\'s email: ')
-DB_URI = input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ')
+PROJECT_SLUG = raw_input('Enter your project\'s slug: ') or 'meh_project'
+PROJECT_NAME = raw_input('Enter your project\'s name: ') or 'Meh Project'
+ADMIN_NAME = raw_input('Provide the admin\'s name: ') or 'Eshan Das'
+ADMIN_EMAIL = raw_input('Provide the admin\'s email: ') or 'eshandasnit@gmail.com'
+DB_URI = raw_input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ') or 'postgresql://eshan:charli3!@127.0.0.1:9000/meh'
+
+
+def _get_list_of_files(dir_name):
+    '''
+    For the given path, get the List of all files in the directory tree 
+    '''
+    # create a list of file and sub directories 
+    # names in the given directory 
+    listOfFile = os.listdir(dir_name)
+    allFiles = list()
+    # Iterate over all the entries
+    for entry in listOfFile:
+        # Create full path
+        fullPath = os.path.join(dir_name, entry)
+        # If entry is a directory then get the list of files in this directory 
+        if os.path.isdir(fullPath):
+            allFiles = allFiles + _get_list_of_files(fullPath)
+        else:
+            allFiles.append(fullPath)
+    return allFiles
 
 
 # Refresh all SECRET_KEYs in the settings files
@@ -24,7 +45,8 @@ def generate_secret_keys():
         target_file.close()
 
         context = {
-            'secret_key': ''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])}
+            'secret_key': ''.join([random.SystemRandom().choice(
+                'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])}
 
         content = template.render(context) + '\n'
 
@@ -106,8 +128,8 @@ def prep_template_files():
         template = target_file.read()
         target_file.close()
 
-        content = re.sub('{{\s*project_slug\s*}}', PROJECT_SLUG, template)
-        content = re.sub('{{\s*project_name\s*}}', PROJECT_NAME, template)
+        content = re.sub('{{\s*project_slug\s*}}', PROJECT_SLUG, template)  # noqa
+        content = re.sub('{{\s*project_name\s*}}', PROJECT_NAME, template)  # noqa
 
         target_file = open(file_name, mode='w')
         target_file.write(content)
@@ -136,6 +158,35 @@ def prep_other_files():
         target_file.close()
 
 
+# Prepare docker files
+def prep_docker_files():
+    print('Prepare Docker files...')
+    file_names = _get_list_of_files('./compose')
+
+    for file_name in file_names:
+        target_file = open(file_name, mode='r')
+        template = Template(target_file.read())
+        target_file.close()
+
+        context = {
+            'project_slug': PROJECT_SLUG,
+            'project_name': PROJECT_NAME}
+
+        content = template.render(context) + '\n'
+
+        target_file = open(file_name, mode='w')
+        target_file.write(content)
+        target_file.close()
+
+
+# Setup flake8
+def setup_flake8():
+    # http://flake8.pycqa.org/en/latest/user/using-hooks.html
+    print('Setup flake8...')
+    subprocess.run(["flake8", "--install-hook", "git"], capture_output=True)
+    subprocess.run(["git config", "--bool", "flake8.strict", "true"], capture_output=True)
+
+
 # Rename the "django_project" folder name
 def rename_project_folder():
     os.rename('django_project', PROJECT_SLUG)
@@ -147,6 +198,8 @@ def main():
     create_env_file()
     prep_other_files()
     prep_template_files()
+    prep_docker_files()
+    setup_flake8()
     rename_project_folder()
 
 
