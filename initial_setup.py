@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 from jinja2 import Template
 
 
-DEFAULT_PROJECT_NAME = 'django_project'
+DEFAULT_PROJECT_NAME = 'web'
 PROJECT_SLUG = input('Enter your project\'s slug: ') or 'meh_project'
 PROJECT_NAME = input('Enter your project\'s name: ') or 'Meh Project'
 ADMIN_NAME = input('Provide the admin\'s name: ') or 'Eshan Das'
@@ -58,7 +58,7 @@ def generate_secret_keys():
 
 
 # Replace "{{django_project}}" with the project name from production.yml and local.yml
-def create_docker_compose_files():
+def prep_docker_compose_files():
     print('Creating docker compose files...')
     file_names = ('local.yml', 'production.yml')
 
@@ -207,11 +207,11 @@ def setup_flake8():
 
 def main():
     generate_secret_keys()
-    create_docker_compose_files()
+    prep_docker_compose_files()
     create_env_file()
     prep_other_files()
     prep_template_files()
-    prep_docker_files()
+    # prep_docker_files()
     # setup_flake8()
 
 

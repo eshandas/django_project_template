@@ -1,0 +1,32 @@
+version: '3'
+
+volumes:
+  local_postgres_data: {}
+  local_postgres_data_backups: {}
+
+services:
+  db:
+    image: meh_project_postgres:prod
+    build:
+      context: .
+      dockerfile: ./compose/db/Dockerfile
+    env_file: .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+      - local_postgres_data_backups:/backups
+
+  web:
+    image: meh_project_web:prod
+    build:
+      context: .
+      dockerfile: ./compose/web/Dockerfile
+    env_file: .env
+    volumes:
+      - .:/web_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    command: /start
