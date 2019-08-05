@@ -57,3 +57,20 @@ python initial_setup.py
 ```
 rm initial_setup.py
 ```
+
+* Check if docker-machine and docker-compose are installed. If not, installe them
+
+```
+$ docker-machine version
+docker-machine version 0.16.1, build cce350d7
+
+$ docker-compose version
+docker-compose version 1.23.2, build 1110ad01
+CPython version: 3.7.3
+```
+
+* Install virtualbox for docker-machine to work properly
+
+```
+sudo apt-get install virtualbox
+```

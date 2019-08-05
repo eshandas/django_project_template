@@ -2,6 +2,7 @@ import os
 import random
 import re
 import subprocess
+from urllib.parse import urlparse
 from jinja2 import Template
 
 
@@ -10,7 +11,7 @@ PROJECT_SLUG = input('Enter your project\'s slug: ') or 'meh_project'
 PROJECT_NAME = input('Enter your project\'s name: ') or 'Meh Project'
 ADMIN_NAME = input('Provide the admin\'s name: ') or 'Eshan Das'
 ADMIN_EMAIL = input('Provide the admin\'s email: ') or 'eshandasnit@gmail.com'
-DB_URI = input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ') or 'postgresql://eshan:password@127.0.0.1:9000/meh'
+DB_URI = input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ') or 'postgresql://eshan:password@127.0.0.1:9000/dev'
 
 
 def _get_list_of_files(dir_name):
@@ -36,7 +37,7 @@ def _get_list_of_files(dir_name):
 # Refresh all SECRET_KEYs in the settings files
 def generate_secret_keys():
     print('Generating Django secret keys...')
-    file_names = ('local.py', 'production.py')
+    file_names = ('local.py', 'production.py', 'test.py')
 
     for file_name in file_names:
         target_file = open(
@@ -83,8 +84,16 @@ def create_env_file():
     print('Creating env file...')
 
     template = Template('''
+# Settings file to run
+SETTINGS_FILE=main.settings.local
+
 # DATABASES
 DATABASE_URL={{db_uri}}
+DB_NAME={{db_name}}
+DB_USER={{db_user}}
+DB_PASSWORD={{db_password}}
+DB_HOST={{db_host}}
+DB_PORT={{db_port}}
 
 # AWS
 AWS_ACCESS_KEY=xxxxxxxxxxxxxxxxxxx
@@ -102,9 +111,16 @@ EMAIL_FROM={{admin_email}}
 VIRTUALENV={{project_slug}}
 ''')
 
+    _db_uri = urlparse(DB_URI)
+
     context = {
         'project_slug': PROJECT_SLUG,
         'db_uri': DB_URI,
+        'db_name': _db_uri.path[1:],
+        'db_user': _db_uri.username,
+        'db_password': _db_uri.password,
+        'db_host': _db_uri.hostname,
+        'db_port': _db_uri.port,
         'admin_email': ADMIN_EMAIL}
 
     content = template.render(context) + '\n'
@@ -161,7 +177,9 @@ def prep_other_files():
 # Prepare docker files
 def prep_docker_files():
     print('Prepare Docker files...')
-    file_names = _get_list_of_files('./compose')
+    # file_names = _get_list_of_files('./compose')
+    file_names = (
+        'local.yml')
 
     for file_name in file_names:
         target_file = open(file_name, mode='r')

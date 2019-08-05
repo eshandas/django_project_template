@@ -5,31 +5,28 @@ volumes:
   local_postgres_data_backups: {}
 
 services:
-  django: &django
+  db:
+    image: {{project_slug}}_postgres:local
     build:
       context: .
-      dockerfile: ./compose/local/django/Dockerfile
-    image: {{project_slug}}_local_django
-    depends_on:
-      - postgres
-    volumes:
-      - .:/app
-    env_file:
-      - ./{{project_slug}}/.env
+      dockerfile: ./compose/db/Dockerfile
+    env_file: .env
     ports:
-      - "8000:8000"
-    command: /start
-
-  postgres:
-    build:
-      context: .
-      dockerfile: ./compose/local/postgres/Dockerfile
-    image: {{project_slug}}_production_postgres
+      - "5432:5432"
     volumes:
       - local_postgres_data:/var/lib/postgresql/data
       - local_postgres_data_backups:/backups
-    env_file:
-      - ./{{project_slug}}/.env
 
-  redis:
-    image: redis:3.2
+  web:
+    image: {{project_slug}}_web:local
+    build:
+      context: .
+      dockerfile: ./compose/web/Dockerfile
+    env_file: .env
+    volumes:
+      - .:/web_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    command: /start

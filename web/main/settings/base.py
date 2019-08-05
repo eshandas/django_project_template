@@ -12,15 +12,9 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-import environ
 
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(os.path.realpath(os.path.dirname(__file__) + "/.."))
-
-env_root = environ.Path(__file__) - 3  # three folder back (/main/settings/local - 4 = /)
-env = environ.Env(
-    DEBUG=(bool, False),)  # set default values and casting
-environ.Env.read_env(env_file=env_root('.env'))  # reading .env file
 
 
 # Quick-start development settings - unsuitable for production
@@ -87,7 +81,14 @@ TEMPLATES = [
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': env.db()
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.environ['DB_USER'],
+        'PASSWORD': os.environ['DB_PASSWORD'],
+        'HOST': os.environ['DB_HOST'],
+        'PORT': os.environ['DB_PORT']
+    }
 }
 
 
@@ -117,9 +118,9 @@ VERSION = {
 
 
 # AWS Settings
-AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY')
-AWS_SECRET_ACCESS_KEY = env('AWS_ACCESS_SECRET')
-AWS_REGION_NAME = env('AWS_REGION')
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_ACCESS_SECRET']
+AWS_REGION_NAME = os.environ['AWS_REGION']
 
 LOGIN_URL = '/admin/login/'
 LOGOUT_URL = '/admin/logout/'
@@ -168,3 +169,15 @@ CORS_EXPOSE_HEADERS = (
 
 # Celery related settings
 CELERY_RESULT_BACKEND = 'django-cache'
+
+
+# Email server settings
+# ABSOLUTELY REMOVE THE DUMMY EMAIL SERVER IN PRODUCTION!!!
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = os.environ['EMAIL_HOST']
+EMAIL_PORT = os.environ['EMAIL_PORT']
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_FROM = os.environ['EMAIL_FROM']

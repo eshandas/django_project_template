@@ -45,15 +45,3 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Celery Flower task url
 FLOWER_TASK_URL = '/flower/task/%s'
-
-
-# Email server settings
-# ABSOLUTELY REMOVE THE DUMMY EMAIL SERVER IN PRODUCTION!!!
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_HOST = env('EMAIL_HOST')
-EMAIL_PORT = env('EMAIL_PORT')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-EMAIL_FROM = env('EMAIL_FROM')
