@@ -40,6 +40,12 @@ Following is the tech stack being used for main project:
 * [Celery 4.3] - A task queue used for async processes and task scheduling
 
 ### Project Setup
+* Install Jinja2 before initializing the project
+
+```
+pip install Jinja2
+```
+
 * Initialize project setup by running:
 
 ```
