@@ -187,11 +187,6 @@ def setup_flake8():
     subprocess.run(["git config", "--bool", "flake8.strict", "true"])
 
 
-# Rename the "django_project" folder name
-def rename_project_folder():
-    os.rename('django_project', PROJECT_SLUG)
-
-
 def main():
     generate_secret_keys()
     create_docker_compose_files()
@@ -200,7 +195,6 @@ def main():
     prep_template_files()
     prep_docker_files()
     # setup_flake8()
-    rename_project_folder()
 
 
 if __name__ == '__main__':
