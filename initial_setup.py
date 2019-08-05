@@ -125,7 +125,7 @@ VIRTUALENV={{project_slug}}
 
     content = template.render(context) + '\n'
 
-    target_file = open('%s/.env' % DEFAULT_PROJECT_NAME, mode='w')
+    target_file = open('.env', mode='w')
     target_file.write(content)
     target_file.close()
 
