@@ -6,7 +6,7 @@ volumes:
 
 services:
   db:
-    image: meh_project_postgres:local
+    image: {{ project_slug }}_postgres:local
     build:
       context: .
       dockerfile: ./compose/db/Dockerfile
@@ -17,8 +17,8 @@ services:
       - local_postgres_data:/var/lib/postgresql/data
       - local_postgres_data_backups:/backups
 
-  web:
-    image: meh_project_web:local
+  web: &web
+    image: {{ project_slug }}_web:local
     build:
       context: .
       dockerfile: ./compose/web/Dockerfile
@@ -30,3 +30,35 @@ services:
     depends_on:
       - db
     command: /start
+
+  redis:
+    image: redis:5.0
+    ports:
+      - "6379:6379"
+
+  celeryworker:
+    <<: *web
+    image: {{ project_slug }}_celeryworker:local
+    depends_on:
+      - redis
+      - db
+    environment:
+      - C_FORCE_ROOT=true
+    ports: []
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *web
+    image: {{ project_slug }}_celerybeat:local
+    depends_on:
+      - redis
+      - db
+    ports: []
+    command: /start-celerybeat
+
+  flower:
+    <<: *web
+    image: {{ project_slug }}_flower:local
+    ports:
+      - "5555:5555"
+    command: /start-flower

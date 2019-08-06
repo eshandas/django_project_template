@@ -16,15 +16,14 @@ from django.urls import include, path
 from django.conf import settings
 
 from .views import IndexView, health
-from .api_views import PingCelery
 from django.contrib import admin
 
 from rest_framework_swagger.views import get_swagger_view
-schema_view = get_swagger_view(title='Sales Sentry APIs')
+schema_view = get_swagger_view(title='{{ project_name }} APIs')
 
 v1 = settings.VERSION['v1']
 
-admin.site.site_header = 'Sales Sentry'
+admin.site.site_header = '{{ project_name }}'
 
 
 urlpatterns = [
@@ -32,7 +31,6 @@ urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('api/', schema_view, name='swagger'),
     path('health/', health, name='health'),
-    path('api/%s/ping-celery/' % v1, PingCelery.as_view(), name='ping_celery'),
 
     # --- Appauth
     path('auth/', include('appauth.urls')),

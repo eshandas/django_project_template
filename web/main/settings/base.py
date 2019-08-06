@@ -105,6 +105,7 @@ AUTH_USER_MODEL = 'appauth.AppUser'
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
+CELERY_TIMEZONE = 'UTC'
 
 USE_I18N = True
 
@@ -168,7 +169,15 @@ CORS_EXPOSE_HEADERS = (
 
 
 # Celery related settings
+CELERY_INCLUDE = (
+    'global_tasks.email_tasks.email_tasks', )
 CELERY_RESULT_BACKEND = 'django-cache'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+# Using pickle for serializing instead of JSON because
+# it supports serializing python objects
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_RESULT_SERIALIZER = 'pickle'
+CELERY_ACCEPT_CONTENT = ['pickle']
 
 
 # Email server settings

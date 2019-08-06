@@ -80,4 +80,5 @@ docker-compose -f local.yml run <container-id/name> <command>
 
 # E.g
 # docker-compose -f local.yml run web python web/manage.py createsuperuser
+# docker-compose -f local.yml run web /bin/sh
 ```

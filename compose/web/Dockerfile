@@ -29,3 +29,18 @@ RUN pip install -r /web_app/requirements/local.txt
 COPY ./compose/web/start /start
 RUN sed -i 's/\r//' /start
 RUN chmod +x /start
+
+
+COPY ./compose/web/celery/worker/start /start-celeryworker
+RUN sed -i 's/\r$//g' /start-celeryworker
+RUN chmod +x /start-celeryworker
+
+
+COPY ./compose/web/celery/beat/start /start-celerybeat
+RUN sed -i 's/\r$//g' /start-celerybeat
+RUN chmod +x /start-celerybeat
+
+
+COPY ./compose/web/celery/flower/start /start-flower
+RUN sed -i 's/\r$//g' /start-flower
+RUN chmod +x /start-flower

@@ -12,6 +12,7 @@ PROJECT_NAME = input('Enter your project\'s name: ') or 'Meh Project'
 ADMIN_NAME = input('Provide the admin\'s name: ') or 'Eshan Das'
 ADMIN_EMAIL = input('Provide the admin\'s email: ') or 'eshandasnit@gmail.com'
 DB_URI = input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ') or 'postgresql://eshan:password@db:5432/dev'
+REDIS_URI = input('Enter Redis URI (redis://redis:6379/0): ') or 'redis://redis:6379/0'
 
 
 def _get_list_of_files(dir_name):
@@ -87,6 +88,9 @@ def create_env_file():
 # Settings file to run
 SETTINGS_FILE=main.settings.local
 
+# Redis URI
+REDIS_URI={{redis_uri}}
+
 # DATABASES
 DATABASE_URL={{db_uri}}
 DB_NAME={{db_name}}
@@ -116,6 +120,7 @@ VIRTUALENV={{project_slug}}
     context = {
         'project_slug': PROJECT_SLUG,
         'db_uri': DB_URI,
+        'redis_uri': REDIS_URI,
         'db_name': _db_uri.path[1:],
         'db_user': _db_uri.username,
         'db_password': _db_uri.password,
