@@ -40,7 +40,7 @@ Following is the tech stack being used for main project:
 * [Celery 4.3] - A task queue used for async processes and task scheduling
 
 ### Project Setup
-* Install Jinja2 before initializing the project
+* Install Jinja2 before initializing the project. Jinja2 is required to run the initial setup. Installing it in a virtualenv is recommended.
 
 ```
 pip install Jinja2
@@ -58,7 +58,7 @@ python initial_setup.py
 rm initial_setup.py
 ```
 
-* Check if docker-machine and docker-compose are installed. If not, installe them
+* Check if docker-machine and docker-compose are installed. If not, install them
 
 ```
 $ docker-machine version
@@ -69,8 +69,10 @@ docker-compose version 1.23.2, build 1110ad01
 CPython version: 3.7.3
 ```
 
-* Install virtualbox for docker-machine to work properly
+* Start the docker containers
 
 ```
-sudo apt-get install virtualbox
+docker-compose -f local.yml up -d
 ```
+
+* Visit localhost:8000
