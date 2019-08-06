@@ -11,7 +11,7 @@ PROJECT_SLUG = input('Enter your project\'s slug: ') or 'meh_project'
 PROJECT_NAME = input('Enter your project\'s name: ') or 'Meh Project'
 ADMIN_NAME = input('Provide the admin\'s name: ') or 'Eshan Das'
 ADMIN_EMAIL = input('Provide the admin\'s email: ') or 'eshandasnit@gmail.com'
-DB_URI = input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ') or 'postgresql://eshan:password@127.0.0.1:9000/dev'
+DB_URI = input('Enter database URI (postgresql://{{user}}:{{password}}@{{host}}:{{port}}/{{dbname}}): ') or 'postgresql://eshan:password@db:5432/dev'
 
 
 def _get_list_of_files(dir_name):
@@ -125,7 +125,7 @@ VIRTUALENV={{project_slug}}
 
     content = template.render(context) + '\n'
 
-    target_file = open('%s/.env' % DEFAULT_PROJECT_NAME, mode='w')
+    target_file = open('.env', mode='w')
     target_file.write(content)
     target_file.close()
 

@@ -1,3 +1,3 @@
 FROM postgres
 
-ADD ./db/init /docker-entrypoint-initdb.d/
+ADD ./compose/db/init /docker-entrypoint-initdb.d/

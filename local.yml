@@ -6,7 +6,7 @@ volumes:
 
 services:
   db:
-    image: {{project_slug}}_postgres:local
+    image: meh_project_postgres:local
     build:
       context: .
       dockerfile: ./compose/db/Dockerfile
@@ -18,7 +18,7 @@ services:
       - local_postgres_data_backups:/backups
 
   web:
-    image: {{project_slug}}_web:local
+    image: meh_project_web:local
     build:
       context: .
       dockerfile: ./compose/web/Dockerfile

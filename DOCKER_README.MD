@@ -72,3 +72,12 @@ docker-compose -f local.yml up -d
 
 - -f: The Docker Compose yaml file
 - -d: Detached - Run in background
+
+* Docker Compose execute command
+
+```
+docker-compose -f local.yml run <container-id/name> <command>
+
+# E.g
+# docker-compose -f local.yml run web python web/manage.py createsuperuser
+```
