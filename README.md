@@ -75,4 +75,4 @@ CPython version: 3.7.3
 docker-compose -f local.yml up -d
 ```
 
-* Visit localhost:8000
+* Visit localhost:8000 for the application and localhost:5555 for Celery Flower
