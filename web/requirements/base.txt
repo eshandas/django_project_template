@@ -3,7 +3,7 @@ Pillow==6.0.0  # https://github.com/python-pillow/Pillow
 redis==3.2.1  # https://github.com/antirez/redis
 celery==4.3.0  # pyup: < 5.0  # https://github.com/celery/celery
 django-celery-beat==1.1.1
-django-celery-results==1.0.1
+django-celery-results==2.4.0
 flower==0.9.3  # https://github.com/mher/flower
 requests==2.22.0  # https://pypi.org/project/requests/
 
